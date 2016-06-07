@@ -12,7 +12,7 @@ describe Marathon::App do
       },
       'env' => {'FOO' => 'BAR', 'blubb' => 'blah'},
       'constraints' => [['hostname', 'UNIQUE']],
-      'uris' => ['http://example.com/big.tar'],
+      'fetch' => [{'uri' => 'http://example.com/big.tar'}],
       'labels' => {'abc'=>'123'},
       'version' => 'foo-version'
     }) }
@@ -43,7 +43,7 @@ describe Marathon::App do
     subject { described_class.new({ 'id' => '/app/foo' }) }
 
     let(:expected_string) do
-      '{"env":{},"labels":{},"ports":[],"uris":[],"id":"/app/foo"}'
+      '{"env":{},"labels":{},"ports":[],"id":"/app/foo"}'
     end
 
     its(:to_json) { should == expected_string }
@@ -138,7 +138,7 @@ describe Marathon::App do
       expect(subject).to receive(:check_read_only)
       expect(described_class).to receive(:change).with(
           '/app/foo',
-          {:env=>{}, :labels=>{}, :ports=>[], :uris=>[], :id=>"/app/foo"},
+          {:env=>{}, :labels=>{}, :ports=>[], :id=>"/app/foo"},
           false
         )
       subject.start!
@@ -148,7 +148,7 @@ describe Marathon::App do
       expect(described_class).to receive(:change)
         .with(
           '/app/foo',
-          {:env=>{}, :labels=>{}, :ports=>[], :uris=>[], :id=>"/app/foo"},
+          {:env=>{}, :labels=>{}, :ports=>[], :id=>"/app/foo"},
           false
         )
       subject.start!
